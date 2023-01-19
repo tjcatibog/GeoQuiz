@@ -3,7 +3,6 @@ package net.catibog.geoquiz
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-private const val TAG = "QuizViewModel"
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -24,7 +23,7 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
 
     private var questionsUserAnswers = questionBank.associateWith { false }.toMutableMap()
 
-    private val currentQuestionAnswer: Boolean
+    val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
     val allQuestionsAnswered: Boolean
         get() = answered == questionBank.size
