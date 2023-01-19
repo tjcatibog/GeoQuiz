@@ -18,6 +18,7 @@
 
     <string name="warning_text">Are you sure you want to do this?</string>
     <string name="show_answer_button">Show Answer</string>
+    <string name="cheats_remaining_label">Cheats remaining: </string>
     <string name="cheat_button">Cheat!</string>
-    <string name="judgement_toast">Cheating is wrong.</string>
+    <string name="judgement_toast">Cheating is wrong. Score not counted.</string>
 </resources>

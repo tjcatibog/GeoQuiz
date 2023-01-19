@@ -3,9 +3,9 @@ package net.catibog.geoquiz
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import net.catibog.geoquiz.databinding.ActivityCheatBinding
 
@@ -30,6 +30,7 @@ class CheatActivity : AppCompatActivity() {
             displayCheatText()
             setAnswerShownResult()
         }
+        binding.deviceRuntimeVersion.text = "API Level ${Build.VERSION.SDK_INT}"
         displayCheatText()
     }
 

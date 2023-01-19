@@ -1,12 +1,16 @@
 package net.catibog.geoquiz
 
 import android.app.Activity
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
 import net.catibog.geoquiz.databinding.ActivityMainBinding
 
@@ -19,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private val cheatLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             quizViewModel.isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+            updateQuestion()
         }
     }
 
@@ -81,7 +86,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateQuestion() {
         binding.questionTextView.setText(quizViewModel.currentQuestionText)
+        binding.cheatsRemainingValue.text = quizViewModel.cheatsRemaining.toString()
         if (quizViewModel.currentQuestionAnswered) disableButtons() else enableButtons()
+        if (quizViewModel.cheatsRemaining == 0) binding.cheatButton.isEnabled = false
     }
 
     private fun enableButtons() {

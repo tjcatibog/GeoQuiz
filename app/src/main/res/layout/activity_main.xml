@@ -35,6 +35,25 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/cheats_remaining_label" />
+
+        <TextView
+            android:id="@+id/cheats_remaining_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="3"/>
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/cheat_button"
         android:layout_width="wrap_content"

@@ -9,12 +9,16 @@ const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var correct = 0
     private var answered = 0
+    private val maxCheatsAllowed = 3
     private var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
     var isCheater: Boolean
         get() = savedStateHandle["CHEATED_QUESTION_${currentQuestionText}"] ?: false
-        set(value) = savedStateHandle.set("CHEATED_QUESTION_${currentQuestionText}", value)
+        set(value) {
+            savedStateHandle["CHEATED_QUESTION_${currentQuestionText}"] = value
+            questionsCheatedOn[questionBank[currentIndex]] = true
+        }
 
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
@@ -26,6 +30,7 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     )
 
     private var questionsUserAnswers = questionBank.associateWith { false }.toMutableMap()
+    private var questionsCheatedOn: MutableMap<Question, Boolean> = mutableMapOf()
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
@@ -35,6 +40,8 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         get() = questionBank[currentIndex].textResId
     val currentQuestionAnswered: Boolean
         get() = questionsUserAnswers[questionBank[currentIndex]]!!
+    val cheatsRemaining: Int
+        get() = maxCheatsAllowed - questionsCheatedOn.size
     val score: String
         get() = "${correct}/${answered}"
 
