@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
+const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var correct = 0
@@ -11,6 +12,9 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     private var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
+    var isCheater: Boolean
+        get() = savedStateHandle["CHEATED_QUESTION_${currentQuestionText}"] ?: false
+        set(value) = savedStateHandle.set("CHEATED_QUESTION_${currentQuestionText}", value)
 
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
@@ -34,14 +38,11 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     val score: String
         get() = "${correct}/${answered}"
 
-    fun checkAnswer(userAnswer: Boolean): Int {
+    fun checkAnswer(userAnswer: Boolean) {
         questionsUserAnswers[questionBank[currentIndex]] = true
         answered++
-        return if (userAnswer == currentQuestionAnswer) {
+        if (!isCheater && userAnswer == currentQuestionAnswer) {
             correct++
-            R.string.correct_toast
-        } else {
-            R.string.incorrect_toast
         }
     }
 
